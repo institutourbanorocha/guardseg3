@@ -1,0 +1,484 @@
+#:kivy 2.0.0
+#:import Factory kivy.factory.Factory
+
+<MDLabel>:
+    font_size: '14sp'
+
+<MDTextField>:
+    size_hint_y: None
+    height: "48dp"
+    mode: "rectangle"
+
+<MDRoundFlatButton>:
+    size_hint: None, None
+    height: "48dp"
+    width: "120dp"
+
+<MDDataTable>:
+    size_hint: 1, 1
+    use_pagination: True
+    pagination_menu_pos: 'auto'
+    background_color: 1, 1, 1, 1
+
+<MainScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        Image:
+            source: 'logo.jpg'
+            size_hint: None, None
+            size: 150, 80
+            pos_hint: {'center_x': 0.5}
+
+        MDLabel:
+            text: 'Sistema de Supervisão de Vigilantes'
+            halign: 'center'
+            font_style: 'H4'
+            size_hint_y: None
+            height: self.texture_size[1]
+            padding_y: 20
+
+        GridLayout:
+            cols: 2
+            spacing: 20
+            padding: 20
+            size_hint_y: 0.8
+
+            MDRoundFlatButton:
+                text: 'Vigilantes'
+                on_release: root.set_screen('vigilantes')
+                md_bg_color: 0.2, 0.6, 0.9, 1
+                text_color: 1, 1, 1, 1
+
+            MDRoundFlatButton:
+                text: 'Supervisores'
+                on_release: root.set_screen('supervisores')
+                md_bg_color: 0.2, 0.6, 0.9, 1
+                text_color: 1, 1, 1, 1
+
+            MDRoundFlatButton:
+                text: 'Postos'
+                on_release: root.set_screen('postos')
+                md_bg_color: 0.2, 0.6, 0.9, 1
+                text_color: 1, 1, 1, 1
+
+            MDRoundFlatButton:
+                text: 'Inspeções'
+                on_release: root.set_screen('inspecoes')
+                md_bg_color: 0.2, 0.6, 0.9, 1
+                text_color: 1, 1, 1, 1
+
+            MDRoundFlatButton:
+                text: 'Apontamentos'
+                on_release: root.set_screen('apontamentos')
+                md_bg_color: 0.2, 0.6, 0.9, 1
+                text_color: 1, 1, 1, 1
+
+            MDRoundFlatButton:
+                text: 'Não Conformidades'
+                on_release: root.set_screen('nao_conformidades')
+                md_bg_color: 0.2, 0.6, 0.9, 1
+                text_color: 1, 1, 1, 1
+
+            MDRoundFlatButton:
+                text: 'Relatórios'
+                on_release: root.set_screen('relatorios')
+                md_bg_color: 0.2, 0.6, 0.9, 1
+                text_color: 1, 1, 1, 1
+
+<SupervisoresScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+
+        BoxLayout:
+            size_hint_y: None
+            height: "50dp"
+            spacing: 10
+
+            MDRoundFlatButton:
+                text: 'Voltar'
+                on_release: app.voltar_para_main()
+                md_bg_color: 0.7, 0.7, 0.7, 1
+
+            MDRoundFlatButton:
+                text: 'Adicionar'
+                on_release: root.add_item()
+                md_bg_color: 0.2, 0.8, 0.2, 1
+                text_color: 1, 1, 1, 1
+
+            MDRoundFlatButton:
+                text: 'Editar'
+                on_release: root.edit_item(root.ids.supervisores.row_data[root.ids.supervisores.selected_row[0]])
+                md_bg_color: 0.9, 0.6, 0.2, 1
+                text_color: 1, 1, 1, 1
+                disabled: not root.ids.supervisores.selected_row
+
+            MDRoundFlatButton:
+                text: 'Excluir'
+                on_release: root.delete_item(root.ids.supervisores.row_data[root.ids.supervisores.selected_row[0]])
+                md_bg_color: 0.8, 0.2, 0.2, 1
+                text_color: 1, 1, 1, 1
+                disabled: not root.ids.supervisores.selected_row
+
+            MDRoundFlatButton:
+                text: 'Importar CSV'
+                on_release: root.import_csv()
+                md_bg_color: 0.2, 0.6, 0.9, 1
+                text_color: 1, 1, 1, 1
+
+        MDDataTable:
+            id: supervisores
+            column_data: [
+                ("ID", dp(30)),
+                ("Nome", dp(60)),
+                ("Matrícula", dp(40)),
+                ("Email", dp(60)),
+                ("Ativo", dp(30)),
+                ("Criado em", dp(60))
+            ]
+            row_data: []
+
+<VigilantesScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+
+        BoxLayout:
+            size_hint_y: None
+            height: "50dp"
+            spacing: 10
+
+            MDRoundFlatButton:
+                text: 'Voltar'
+                on_release: app.voltar_para_main()
+                md_bg_color: 0.7, 0.7, 0.7, 1
+
+            MDRoundFlatButton:
+                text: 'Adicionar'
+                on_release: root.add_item()
+                md_bg_color: 0.2, 0.8, 0.2, 1
+                text_color: 1, 1, 1, 1
+
+            MDRoundFlatButton:
+                text: 'Editar'
+                on_release: root.edit_item(root.ids.vigilantes.row_data[root.ids.vigilantes.selected_row[0]])
+                md_bg_color: 0.9, 0.6, 0.2, 1
+                text_color: 1, 1, 1, 1
+                disabled: not root.ids.vigilantes.selected_row
+
+            MDRoundFlatButton:
+                text: 'Excluir'
+                on_release: root.delete_item(root.ids.vigilantes.row_data[root.ids.vigilantes.selected_row[0]])
+                md_bg_color: 0.8, 0.2, 0.2, 1
+                text_color: 1, 1, 1, 1
+                disabled: not root.ids.vigilantes.selected_row
+
+            MDRoundFlatButton:
+                text: 'Importar CSV'
+                on_release: root.import_csv()
+                md_bg_color: 0.2, 0.6, 0.9, 1
+                text_color: 1, 1, 1, 1
+
+        MDDataTable:
+            id: vigilantes
+            column_data: [
+                ("ID", dp(30)),
+                ("Nome", dp(60)),
+                ("Matrícula", dp(40)),
+                ("CNV", dp(40)),
+                ("Ativo", dp(30)),
+                ("Criado em", dp(60))
+            ]
+            row_data: []
+
+<PostosScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+
+        BoxLayout:
+            size_hint_y: None
+            height: "50dp"
+            spacing: 10
+
+            MDRoundFlatButton:
+                text: 'Voltar'
+                on_release: app.voltar_para_main()
+                md_bg_color: 0.7, 0.7, 0.7, 1
+
+            MDRoundFlatButton:
+                text: 'Adicionar'
+                on_release: root.add_item()
+                md_bg_color: 0.2, 0.8, 0.2, 1
+                text_color: 1, 1, 1, 1
+
+            MDRoundFlatButton:
+                text: 'Editar'
+                on_release: root.edit_item(root.ids.postos.row_data[root.ids.postos.selected_row[0]])
+                md_bg_color: 0.9, 0.6, 0.2, 1
+                text_color: 1, 1, 1, 1
+                disabled: not root.ids.postos.selected_row
+
+            MDRoundFlatButton:
+                text: 'Excluir'
+                on_release: root.delete_item(root.ids.postos.row_data[root.ids.postos.selected_row[0]])
+                md_bg_color: 0.8, 0.2, 0.2, 1
+                text_color: 1, 1, 1, 1
+                disabled: not root.ids.postos.selected_row
+
+            MDRoundFlatButton:
+                text: 'Importar CSV'
+                on_release: root.import_csv()
+                md_bg_color: 0.2, 0.6, 0.9, 1
+                text_color: 1, 1, 1, 1
+
+        MDDataTable:
+            id: postos
+            column_data: [
+                ("ID", dp(30)),
+                ("Nome", dp(60)),
+                ("Endereço", dp(80)),
+                ("Ativo", dp(30)),
+                ("Criado em", dp(60))
+            ]
+            row_data: []
+
+<InspecoesScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+
+        BoxLayout:
+            size_hint_y: None
+            height: "50dp"
+            spacing: 10
+
+            MDRoundFlatButton:
+                text: 'Voltar'
+                on_release: app.voltar_para_main()
+                md_bg_color: 0.7, 0.7, 0.7, 1
+
+            MDRoundFlatButton:
+                text: 'Adicionar'
+                on_release: root.add_item()
+                md_bg_color: 0.2, 0.8, 0.2, 1
+                text_color: 1, 1, 1, 1
+
+            MDRoundFlatButton:
+                text: 'Editar'
+                on_release: root.edit_item(root.ids.inspecoes.row_data[root.ids.inspecoes.selected_row[0]])
+                md_bg_color: 0.9, 0.6, 0.2, 1
+                text_color: 1, 1, 1, 1
+                disabled: not root.ids.inspecoes.selected_row
+
+            MDRoundFlatButton:
+                text: 'Excluir'
+                on_release: root.delete_item(root.ids.inspecoes.row_data[root.ids.inspecoes.selected_row[0]])
+                md_bg_color: 0.8, 0.2, 0.2, 1
+                text_color: 1, 1, 1, 1
+                disabled: not root.ids.inspecoes.selected_row
+
+            MDRoundFlatButton:
+                text: 'Importar CSV'
+                on_release: root.import_csv()
+                md_bg_color: 0.2, 0.6, 0.9, 1
+                text_color: 1, 1, 1, 1
+
+        MDDataTable:
+            id: inspecoes
+            column_data: [
+                ("ID", dp(30)),
+                ("Supervisor", dp(60)),
+                ("Vigilante", dp(60)),
+                ("Posto", dp(60)),
+                ("Data Inspeção", dp(60)),
+                ("Observações", dp(80)),
+                ("Criado em", dp(60))
+            ]
+            row_data: []
+
+<ApontamentosScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+
+        BoxLayout:
+            size_hint_y: None
+            height: "50dp"
+            spacing: 10
+
+            MDRoundFlatButton:
+                text: 'Voltar'
+                on_release: app.voltar_para_main()
+                md_bg_color: 0.7, 0.7, 0.7, 1
+
+            MDRoundFlatButton:
+                text: 'Adicionar'
+                on_release: root.add_item()
+                md_bg_color: 0.2, 0.8, 0.2, 1
+                text_color: 1, 1, 1, 1
+
+            MDRoundFlatButton:
+                text: 'Editar'
+                on_release: root.edit_item(root.ids.apontamentos.row_data[root.ids.apontamentos.selected_row[0]])
+                md_bg_color: 0.9, 0.6, 0.2, 1
+                text_color: 1, 1, 1, 1
+                disabled: not root.ids.apontamentos.selected_row
+
+            MDRoundFlatButton:
+                text: 'Excluir'
+                on_release: root.delete_item(root.ids.apontamentos.row_data[root.ids.apontamentos.selected_row[0]])
+                md_bg_color: 0.8, 0.2, 0.2, 1
+                text_color: 1, 1, 1, 1
+                disabled: not root.ids.apontamentos.selected_row
+
+            MDRoundFlatButton:
+                text: 'Importar CSV'
+                on_release: root.import_csv()
+                md_bg_color: 0.2, 0.6, 0.9, 1
+                text_color: 1, 1, 1, 1
+
+        MDDataTable:
+            id: apontamentos
+            column_data: [
+                ("ID", dp(30)),
+                ("Inspeção", dp(30)),
+                ("EPI", dp(30)),
+                ("Obs. EPI", dp(50)),
+                ("Posto", dp(30)),
+                ("Obs. Posto", dp(50)),
+                ("Armamento", dp(30)),
+                ("Obs. Armamento", dp(50)),
+                ("Documentação", dp(30)),
+                ("Obs. Doc.", dp(50)),
+                ("Saúde", dp(30)),
+                ("Obs. Saúde", dp(50)),
+                ("Procedimentos", dp(30)),
+                ("Obs. Proc.", dp(50)),
+                ("Criado em", dp(60))
+            ]
+            row_data: []
+
+<NaoConformidadesScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+
+        BoxLayout:
+            size_hint_y: None
+            height: "50dp"
+            spacing: 10
+
+            MDRoundFlatButton:
+                text: 'Voltar'
+                on_release: app.voltar_para_main()
+                md_bg_color: 0.7, 0.7, 0.7, 1
+
+            MDRoundFlatButton:
+                text: 'Adicionar'
+                on_release: root.add_item()
+                md_bg_color: 0.2, 0.8, 0.2, 1
+                text_color: 1, 1, 1, 1
+
+            MDRoundFlatButton:
+                text: 'Editar'
+                on_release: root.edit_item(root.ids.nao_conformidades.row_data[root.ids.nao_conformidades.selected_row[0]])
+                md_bg_color: 0.9, 0.6, 0.2, 1
+                text_color: 1, 1, 1, 1
+                disabled: not root.ids.nao_conformidades.selected_row
+
+            MDRoundFlatButton:
+                text: 'Excluir'
+                on_release: root.delete_item(root.ids.nao_conformidades.row_data[root.ids.nao_conformidades.selected_row[0]])
+                md_bg_color: 0.8, 0.2, 0.2, 1
+                text_color: 1, 1, 1, 1
+                disabled: not root.ids.nao_conformidades.selected_row
+
+            MDRoundFlatButton:
+                text: 'Importar CSV'
+                on_release: root.import_csv()
+                md_bg_color: 0.2, 0.6, 0.9, 1
+                text_color: 1, 1, 1, 1
+
+        MDDataTable:
+            id: nao_conformidades
+            column_data: [
+                ("ID", dp(30)),
+                ("Apontamento", dp(30)),
+                ("Descrição", dp(80)),
+                ("Ação Corretiva", dp(80)),
+                ("Prazo", dp(40)),
+                ("Status", dp(40)),
+                ("Criado em", dp(60))
+            ]
+            row_data: []
+
+<AddEditScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        MDLabel:
+            text: 'Formulário'
+            halign: 'center'
+            font_style: 'H5'
+            size_hint_y: None
+            height: self.texture_size[1]
+            padding_y: 10
+
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+
+            BoxLayout:
+                id: form_layout
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: 10
+                padding: 10
+
+        BoxLayout:
+            size_hint_y: None
+            height: "50dp"
+            spacing: 10
+            padding: [0, 10, 0, 0]
+
+            MDRoundFlatButton:
+                text: 'Cancelar'
+                on_release: app.voltar_para_main()
+                md_bg_color: 0.7, 0.7, 0.7, 1
+
+            MDRoundFlatButton:
+                text: 'Salvar'
+                on_release: root.save_item()
+                md_bg_color: 0.2, 0.8, 0.2, 1
+                text_color: 1, 1, 1, 1
+
+<ScreenManager>:
+    MainScreen:
+        name: 'main'
+    SupervisoresScreen:
+        name: 'supervisores'
+    VigilantesScreen:
+        name: 'vigilantes'
+    PostosScreen:
+        name: 'postos'
+    InspecoesScreen:
+        name: 'inspecoes'
+    ApontamentosScreen:
+        name: 'apontamentos'
+    NaoConformidadesScreen:
+        name: 'nao_conformidades'
+    AddEditScreen:
+        name: 'add_edit'
