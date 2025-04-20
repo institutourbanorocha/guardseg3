@@ -14,17 +14,32 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install Buildozer and dependencies
+      - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt install -y build-essential libncurses5-dev libncursesw5-dev libreadline6-dev libssl-dev zlib1g-dev openjdk-17-jdk python3-pip
+          sudo apt install -y build-essential libncurses5-dev libncursesw5-dev libreadline6-dev libssl-dev zlib1g-dev openjdk-17-jdk python3-pip unzip
+
+      - name: Install Buildozer and Cython
+        run: |
           pip install buildozer cython
 
-      - name: Install Android SDK and NDK
+      - name: Install Android SDK
         run: |
-          buildozer android debug
-        working-directory: ./
-        continue-on-error: true # Permite continuar mesmo se o build falhar (para baixar SDK/NDK)
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O commandlinetools.zip
+          unzip commandlinetools.zip -d /tmp/cmdline-tools
+          mkdir -p /home/runner/android-sdk
+          mv /tmp/cmdline-tools/cmdline-tools /home/runner/android-sdk/latest
+          export ANDROID_HOME=/home/runner/android-sdk
+          export PATH=$PATH:$ANDROID_HOME/latest/bin
+          yes | /home/runner/android-sdk/latest/bin/sdkmanager --licenses
+          /home/runner/android-sdk/latest/bin/sdkmanager "build-tools;33.0.2" "platforms;android-33" "platform-tools"
+        env:
+          ANDROID_HOME: /home/runner/android-sdk
+
+      - name: Set up Buildozer environment
+        run: |
+          echo "export ANDROID_HOME=/home/runner/android-sdk" >> $GITHUB_ENV
+          echo "export PATH=$PATH:/home/runner/android-sdk/latest/bin:/home/runner/android-sdk/platform-tools" >> $GITHUB_ENV
 
       - name: Build APK
         run: |
