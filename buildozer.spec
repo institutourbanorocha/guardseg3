@@ -73,9 +73,6 @@ fullscreen = 0
 # Supported formats are: #RRGGBB #AARRGGBB
 #android.presplash_color = #FFFFFF
 
-# (int) Target Android API, should be as high as possible.
-android.api = 31
-
 # (int) Minimum API your APK will support.
 android.minapi = 21
 
