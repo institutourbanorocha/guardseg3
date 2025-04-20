@@ -23,30 +23,15 @@ jobs:
         run: |
           pip install buildozer cython==0.29.36
 
-      - name: Install Android SDK
+      - name: Install Android SDK and Build Tools
         run: |
-          mkdir -p /home/runner/android-sdk/cmdline-tools
+          mkdir -p /home/runner/.buildozer/android/platform/android-sdk
           wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O commandlinetools.zip
-          unzip commandlinetools.zip -d /home/runner/android-sdk/cmdline-tools
-          mv /home/runner/android-sdk/cmdline-tools/cmdline-tools /home/runner/android-sdk/cmdline-tools/latest
-          export ANDROID_HOME=/home/runner/android-sdk
-          export ANDROID_SDK_ROOT=/home/runner/android-sdk
-          export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
-          echo "export ANDROID_HOME=/home/runner/android-sdk" >> $GITHUB_ENV
-          echo "export ANDROID_SDK_ROOT=/home/runner/android-sdk" >> $GITHUB_ENV
-          echo "export PATH=$PATH:/home/runner/android-sdk/cmdline-tools/latest/bin:/home/runner/android-sdk/platform-tools" >> $GITHUB_ENV
-          yes | /home/runner/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses || true
-          /home/runner/android-sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;33.0.2" "platforms;android-33" "platform-tools"
-
-      - name: Build APK
-        run: |
-          buildozer android release
-        working-directory: ./
-
-      - name: Upload APK
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release-apk
-          path: ./bin/*.apk
-          retention-days: 5
+          unzip commandlinetools.zip -d /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools
+          mv /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/cmdline-tools /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest
+          export ANDROID_HOME=/home/runner/.buildozer/android/platform/android-sdk
+          export ANDROID_SDK_ROOT=/home/runner/.buildozer/android/platform/android-sdk
+          export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/36.0.0
+          echo "export ANDROID_HOME=/home/runner/.buildozer/android/platform/android-sdk" >> $GITHUB_ENV
+          echo "export ANDROID_SDK_ROOT=/home/runner/.buildozer/android/platform/android-sdk" >> $GITHUB_ENV
+          echo "export PATH=$PATH:/home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin:/home/runner/.buildozer/android/platform/android-sdk/platform-tools:/home/runner/.buildozer/android/platform/android-sdk/build
