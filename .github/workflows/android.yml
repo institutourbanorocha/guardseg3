@@ -22,13 +22,16 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt install -y build-essential libncurses5-dev libncursesw5-dev libreadline6-dev libssl-dev zlib1g-dev openjdk-17-jdk python3-pip unzip
+          sudo apt install -y build-essential libncurses5-dev libncursesw5-dev libreadline6-dev libssl-dev zlib1g-dev openjdk-17-jdk python3-pip unzip git python3-dev libffi-dev libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
 
       - name: Install Buildozer and Cython
         run: |
           pip install --user buildozer cython==0.29.36
           export PATH="$HOME/.local/bin:$PATH"
           echo "PATH=$HOME/.local/bin:$PATH" >> $GITHUB_ENV
+          # Verificar instalação
+          which buildozer
+          buildozer --version
 
       - name: Free up disk space
         run: |
@@ -49,10 +52,14 @@ jobs:
           /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --version
           yes | /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses || true
           /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;36.0.0" "platforms;android-33" "platform-tools"
+          # Verificar SDK
+          ls -la /home/runner/.buildozer/android/platform/android-sdk
 
       - name: Build APK
         run: |
-          buildozer android debug
+          export PATH="$HOME/.local/bin:$PATH"
+          which buildozer
+          buildozer -v android debug
 
       - name: Copy APK to output folder
         run: |
