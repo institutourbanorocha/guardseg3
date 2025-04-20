@@ -9,7 +9,7 @@ jobs:
 
       - name: Configurar Python
         uses: actions/setup-python@v5
-        with:
+        withGEM
           python-version: '3.11'
 
       - name: Instalar Dependências do Sistema
@@ -28,5 +28,9 @@ jobs:
 
       - name: Executar Buildozer
         run: |
-          buildozer init  # Caso o buildozer.spec ainda não exista
           buildozer android debug
+
+      - name: Mostrar Logs do Buildozer em Caso de Falha
+        if: failure()
+        run: |
+          cat .buildozer/logs/buildozer.log
