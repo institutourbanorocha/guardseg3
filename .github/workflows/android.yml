@@ -27,6 +27,7 @@ jobs:
       - name: Install Buildozer and Cython
         run: |
           pip install buildozer cython==0.29.36
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Free up disk space
         run: |
