@@ -2,7 +2,7 @@
 android.arch = armeabi-v7a
 android.archs = arm64-v8a, armeabi-v7a
 package.name = guardseg
-package.domain = org.example
+package.domain = org.supervisore
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 1.0
@@ -12,18 +12,6 @@ android.sdk_path = /path/to/android-sdk  # Optional, Buildozer can download it
 android.ndk_path = /path/to/android-ndk  # Optional, Buildozer can download it
 requirements = python3,kivy==2.1.0,kivymd==1.0.2,pillow,sqlite3
 title = Supervisor de Vigilantes
-
-# (str) Package name
-package.name = supervisorapp
-
-# (str) Package domain (needed for android/ios packaging)
-package.domain = org.supervisor
-
-# (str) Source code where the main.py live
-source.dir = .
-
-# (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
