@@ -41,4 +41,12 @@ jobs:
       - name: Build APK
         run: |
           buildozer android release
-        working
+        working-directory: ./
+
+      - name: Upload APK
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk
+          path: ./bin/*.apk
+          retention-days: 5
