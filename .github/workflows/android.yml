@@ -1,73 +1,32 @@
-name: Build Android APK
-
-on:
-  push:
-    branches: [ main ]
-
+name: Construir APK Android
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Fazer Checkout do Código
         uses: actions/checkout@v4
-        with:
-          submodules: false
 
-      - name: Set up Python
+      - name: Configurar Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.11'
 
-      - name: Install system dependencies
+      - name: Instalar Dependências do Sistema
         run: |
-          sudo apt update
-          sudo apt install -y build-essential libncurses5-dev libncursesw5-dev libreadline6-dev libssl-dev zlib1g-dev openjdk-17-jdk python3-pip unzip git python3-dev libffi-dev libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
+          sudo apt-get update
+          sudo apt-get install -y python3-pip python3-dev cython3 openjdk-17-jdk zlib1g-dev libltdl-dev
+          pip install --user buildozer
 
-      - name: Install Buildozer and Cython
+      - name: Adicionar Buildozer ao PATH
         run: |
-          pip install --user buildozer cython==0.29.36
-          export PATH="$HOME/.local/bin:$PATH"
-          echo "PATH=$HOME/.local/bin:$PATH" >> $GITHUB_ENV
-          # Verificar instalação
-          which buildozer
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Verificar Instalação do Buildozer
+        run: |
           buildozer --version
 
-      - name: Free up disk space
+      - name: Executar Buildozer
         run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf "/usr/local/share/boost"
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-
-      - name: Install Android SDK and Build Tools
-        run: |
-          mkdir -p /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools
-          wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O commandlinetools.zip
-          unzip -q commandlinetools.zip -d /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools
-          mv /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/cmdline-tools /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest
-          echo "ANDROID_HOME=/home/runner/.buildozer/android/platform/android-sdk" >> $GITHUB_ENV
-          echo "ANDROID_SDK_ROOT=/home/runner/.buildozer/android/platform/android-sdk" >> $GITHUB_ENV
-          echo "PATH=$PATH:/home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin:/home/runner/.buildozer/android/platform/android-sdk/platform-tools" >> $GITHUB_ENV
-          /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --version
-          yes | /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses || true
-          /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;36.0.0" "platforms;android-33" "platform-tools"
-          # Verificar SDK
-          ls -la /home/runner/.buildozer/android/platform/android-sdk
-
-      - name: Build APK
-        run: |
-          export PATH="$HOME/.local/bin:$PATH"
-          which buildozer
-          buildozer -v android debug
-
-      - name: Copy APK to output folder
-        run: |
-          mkdir -p output
-          cp bin/*.apk output/
-
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: guardseg3-debug-apk
-          path: output/*.apk
+          buildozer init  # Caso o buildozer.spec ainda não exista
+          buildozer android debug
