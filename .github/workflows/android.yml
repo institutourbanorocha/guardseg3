@@ -1,13 +1,18 @@
 name: Build Android APK
+
 on:
   push:
     branches: [ main ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: false
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -36,12 +41,24 @@ jobs:
           wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O commandlinetools.zip
           unzip -q commandlinetools.zip -d /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools
           mv /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/cmdline-tools /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest
-          export ANDROID_HOME=/home/runner/.buildozer/android/platform/android-sdk
-          export ANDROID_SDK_ROOT=/home/runner/.buildozer/android/platform/android-sdk
-          export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
           echo "ANDROID_HOME=/home/runner/.buildozer/android/platform/android-sdk" >> $GITHUB_ENV
           echo "ANDROID_SDK_ROOT=/home/runner/.buildozer/android/platform/android-sdk" >> $GITHUB_ENV
-          echo "PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools" >> $GITHUB_ENV
+          echo "PATH=$PATH:/home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin:/home/runner/.buildozer/android/platform/android-sdk/platform-tools" >> $GITHUB_ENV
           /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --version
           yes | /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses || true
           /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;36.0.0" "platforms;android-33" "platform-tools"
+
+      - name: Build APK
+        run: |
+          buildozer android debug
+
+      - name: Copy APK to output folder
+        run: |
+          mkdir -p output
+          cp bin/*.apk output/
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: guardseg3-debug-apk
+          path: output/*.apk
