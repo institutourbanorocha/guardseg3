@@ -1,5 +1,17 @@
 [app]
-
+android.arch = armeabi-v7a
+android.archs = arm64-v8a, armeabi-v7a
+title = YourAppName
+package.name = guardseg
+package.domain = org.example
+source.dir = .
+source.include_exts = py,png,jpg,kv,atlas
+version = 1.0
+requirements = python3,kivy
+android.permissions = INTERNET
+android.api = 33
+android.sdk_path = /path/to/android-sdk  # Optional, Buildozer can download it
+android.ndk_path = /path/to/android-ndk  # Optional, Buildozer can download it
 requirements = python3,kivy==2.1.0,kivymd==1.0.2,pillow,sqlite3
 # (str) Title of your application
 title = Supervisor de Vigilantes
