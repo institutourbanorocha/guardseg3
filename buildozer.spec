@@ -7,7 +7,6 @@ package.domain = org.example
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 1.0
-requirements = python3,kivy
 android.permissions = INTERNET
 android.api = 33
 android.sdk_path = /path/to/android-sdk  # Optional, Buildozer can download it
